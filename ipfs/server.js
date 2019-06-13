@@ -20,6 +20,12 @@ app.use(function(req, res, next){
   next();
 });
 
+// simulate NFTs
+var DEFACCOUNT = '1.2.737';
+var accounts = ['1.2.400', '1.2.450', '1.2.400', '1.2.300'];
+var numbers = [65, 44, 12, 4];
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,88 +34,17 @@ app.get("/api/ping", function(req, res){
   res.json({ messaage: "pong" });
 });
 
-app.post("/api/getToken", function(req, res){
-
-
-var DEFACCOUNT = '0x71';
-var accounts = ['0x17', '0x12', '0x17', '0x07'];
-var numbers = [65, 44, 12, 4];
-var newarray = numbers.map(myFunction)
-
-
-//createToken(65);
-createToken(69,numbers, accounts, DEFACCOUNT);
-newarray = numbers.map(myFunction)
-
-function myFunction(num) {
-  return accounts[numbers.indexOf(num)]
-}
-
-function createToken(myId, numbers, accounts, DEFACCOUNT) {
-   if (!numbers.includes(myId)) {
-       console.log(myId)
-       //numbers.push(myId);
-       accounts.push(DEFACCOUNT);
-      //numbers[DEFACCOUNT] = myId;
-      numbers.push(myId)
-   }
-}
-});
 
 app.post("/api/getAccount", function(req, res){
-
-
-var DEFACCOUNT = '0x71';
-var accounts = ['0x17', '0x12', '0x17', '0x07'];
-var numbers = [65, 44, 12, 4];
-var newarray = numbers.map(myFunction)
-
-
-//createToken(65);
-createToken(69,numbers, accounts, DEFACCOUNT);
-newarray = numbers.map(myFunction)
-
-function myFunction(num) {
-  return accounts[numbers.indexOf(num)]
-}
-
-function createToken(myId, numbers, accounts, DEFACCOUNT) {
-   if (!numbers.includes(myId)) {
-       console.log(myId)
-       //numbers.push(myId);
-       accounts.push(DEFACCOUNT);
-      //numbers[DEFACCOUNT] = myId;
-      numbers.push(myId)
-   }
-}
+ var myNFT = parseInt(req.body.myNFT);
+	console.log("ths ");
+	var myaccount = accounts[numbers.indexOf(myNFT)];
+ res.json({ message: "Correct", myaccount: myaccount});
 });
 
 app.post("/api/mint", function(req, res){
+// simulate tokens by global storage
 
-
-var DEFACCOUNT = '0x71';
-var accounts = ['0x17', '0x12', '0x17', '0x07'];
-var numbers = [65, 44, 12, 4];
-var newarray = numbers.map(myFunction)
-
-
-//createToken(65);
-createToken(69,numbers, accounts, DEFACCOUNT);
-newarray = numbers.map(myFunction)
-
-function myFunction(num) {
-  return accounts[numbers.indexOf(num)]
-}
-  
-function createToken(myId, numbers, accounts, DEFACCOUNT) {
-   if (!numbers.includes(myId)) {
-       console.log(myId)
-       //numbers.push(myId);
-       accounts.push(DEFACCOUNT);
-      //numbers[DEFACCOUNT] = myId;
-      numbers.push(myId)
-   }
-}
 });
 
 
