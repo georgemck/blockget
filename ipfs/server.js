@@ -22,8 +22,19 @@ app.use(function(req, res, next){
 
 // simulate NFTs
 var DEFACCOUNT = '1.2.737';
+var numbers = [{nft:65,uri:"QmSJ4Jo7QeWWFB3XtEKXF6RZCbhUhKuFeniAd31Ywp5bbM"}, {nft:44,uri:"QmdggoorEinYU5waziF4Vy8tEuQV6ckpizDhannFT3io4T"}, {nft:12,uri:"QmepFThneps229xhMDVCmqk1C83t7iEEf59VJ5DeeZCK1N"},{ nft:4,uri:"QmT4tn6HXt8jnx3CyxQk2KrGJ9maqgP3jv2NJgWPnqsmBz"}];
+var accounts = ['1.2.400','1.2.450','1.2.400','1.2.737'];
+
+/*
+// simulate NFTs
+var DEFACCOUNT = '1.2.737';
 var accounts = ['1.2.400', '1.2.450', '1.2.400', '1.2.300'];
 var numbers = [65, 44, 12, 4];
+*/
+
+
+
+
 
 
 
@@ -37,9 +48,15 @@ app.get("/api/ping", function(req, res){
 
 app.post("/api/getAccount", function(req, res){
  var myNFT = parseInt(req.body.myNFT);
-	console.log("ths ");
-	var myaccount = accounts[numbers.indexOf(myNFT)];
- res.json({ message: "Correct", myaccount: myaccount});
+  console.log("ths ", myNFT);
+  console.log(myNFT.nft)
+  console.log(parseInt(myNFT.nft))
+	var myaccount = accounts[numbers.indexOf(numbers.find(x => x.nft === myNFT))];
+	var foundipfstext = numbers.find(x => x.nft === myNFT).uri;
+//	var myaccount = accounts[numbers.indexOf(myNFT.nft)];
+
+console.log("myaccount ",myaccount);
+ res.json({ message: "Correct", myaccount: myaccount, foundipfstext: foundipfstext});
 });
 
 app.post("/api/mint", function(req, res){
@@ -63,7 +80,37 @@ console.log("image url " + imageurl);
 
 });
 
+
+
 app.post("/api/saveipfsimageurl", function(req, res){
+  var imageurl = req.body.imageurl;
+console.log("image url " + imageurl);
+
+
+var video = youtubedl(imageurl,
+// Optional arguments passed to youtube-dl.
+['--format=18'],
+// Additional options can be given for calling `child_process.execFile()`.
+{ cwd: __dirname });
+
+// Will be called when the download starts.
+video.on('info', function(info) {
+console.log('Download started');
+console.log('filename: ' + info._filename);
+console.log('size: ' + info.size);
+});
+var imagename = imageurl.substring(imageurl.search("v=")+2);
+console.log(imagename) 
+video.pipe(fs.createWriteStream(imagename));
+res.json({ message: "Correct",  imagename:imagename});
+
+});
+
+
+
+
+
+app.post("/api/saveipfsvideourl", function(req, res){
     var imageurl = req.body.imageurl;
 console.log("image url " + imageurl);
 

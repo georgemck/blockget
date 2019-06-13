@@ -1,0 +1,33 @@
+{
+  "name": "blockget",
+  "version": "1.0.0",
+  "description": "decentralized employee skills platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgemck/blockget.git"
+  },
+  "keywords": [
+    "blockchain",
+    "decentFoundation",
+    "skills",
+    "training",
+    "enterprise"
+  ],
+  "author": "BlockGet Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgemck/blockget/issues"
+  },
+  "homepage": "https://github.com/georgemck/blockget#readme",
+  "dependencies": {
+    "dcorejs-sdk": "^2.5.5",
+    "rxjs": "^6.5.2"
+  },
+  "devDependencies": {
+    "rxjs-spy": "^7.5.1"
+  }
+}

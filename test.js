@@ -1,9 +1,9 @@
 
 
-function addipfsimageurlbtn() {
+function addipfsvideourlbtn() {
     imageurl  = document.getElementById("addipfsimageurl").value;
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://178.62.68.10:3001/api/saveipfsimageurl", true);
+    xhttp.open("POST", "http://178.62.68.10:3001/api/saveipfsvideourl", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("imageurl=" + imageurl );
     xhttp.onreadystatechange = function(){
@@ -24,6 +24,32 @@ function addipfsimageurlbtn() {
         }
       }
     };
+}
+
+function addipfsimageurlbtn() {
+  imageurl  = document.getElementById("addipfsvideourl").value;
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", "http://178.62.68.10:3001/api/saveipfsimageurl", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("imageurl=" + imageurl );
+  xhttp.onreadystatechange = function(){
+    var messageDiv = document.getElementById("message");
+    if (this.readyState == 4 && this.status == 200) {
+      var data = JSON.parse(this.response);
+      if (data.message != "Correct") {
+        printErrorMessage(
+          "innermessage",
+          "paramessage",
+          "Image save failed"
+        );
+
+      } else {
+         imagename = data.imagename;
+         document.getElementById("showipfshash").style.visibility="hidden";
+         document.getElementById("savedimagename").innerHTML=imagename;
+      }
+    }
+  };
 }
 
 function savetextbtn() {
@@ -299,6 +325,7 @@ function getAccount() {
         //  document.getElementById("ipfstexthash").innerHTML=ipfshash;
         //  document.getElementById("paraconfirmowner").innerHTML=ipfshash;
           document.getElementById("foundaccount").innerHTML=data.myaccount;
+          document.getElementById("foundipfstext").innerHTML= "<a target='_blank' href='https://ipfs.io/ipfs/"+ data.foundipfstext + "'>" + data.foundipfstext + "</a>";
 
         }
       }

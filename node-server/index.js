@@ -1,47 +1,19 @@
+"use strict";
+exports.__esModule = true;
 require("reflect-metadata");
-
-const WebSocket = require("ws");
-const express = require("express");
-const { DCoreSdk, Credentials, ChainObject, Address } = require("dcorejs-sdk");
-
-const httpApi = DCoreSdk.createForHttp({ baseUrl: "https://testnet-api.dcore.io/" });
-const socketApi = DCoreSdk.createForWebSocket(() => new WebSocket("wss://testnet-api.dcore.io/"));
-const registrar = new Credentials(ChainObject.parse("1.2.27"), "5Hxwqx6JJUBYWjQNt8DomTNJ6r6YK8wDJym4CMAH1zGctFyQtzt");
-
-const app = express();
-const port = 3000;
-
-app.use(express.json());
-app.get("/accounts", async (req, res) => {
-    try {
-        const result = await httpApi.accountApi.findAll(req.query.q || "").toPromise();
-        res.json(result);
-    } catch (error) {
-        res.json([]);
-    }
-});
-
-app.get("/accounts/:name", async (req, res) => {
-    try {
-        const result = await httpApi.accountApi.get(req.params.name).toPromise();
-        res.json(result);
-    } catch (error) {
-        res.status(404).end();
-    }
-});
-
-app.post("/accounts", async (req, res) => {
-    try {
-        const exist = await httpApi.accountApi.exist(req.body.name).toPromise();
-        if (exist) {
-            res.status(409).end();
-        } else {
-            const result = await socketApi.accountApi.create(registrar, req.body.name, Address.parse(req.body.address)).toPromise();
-            res.json(result);
-        }
-    } catch (error) {
-        res.status(400).json(error);
-    }
-});
-
-app.listen(port, () => console.log(`DCore app listening on port ${port}!`));
+var WebSocket = require("isomorphic-ws");
+var Credentials_1 = require("dist/crypto/Credentials");
+var DCoreSdk_1 = require("dist/DCoreSdk");
+var AssetAmount_1 = require("dist/models/AssetAmount");
+var ChainObject_1 = require("dist/models/ChainObject");
+// import { create } from "rxjs-spy";
+// init rxjs-spy and log all tags
+// const spy = create();
+// spy.log();
+// create api for websocket
+var api = DCoreSdk_1.DCoreSdk.createForWebSocket(function () { return new WebSocket("wss://testnet-api.dcore.io/"); });
+// create account credentials
+var credentials = new Credentials_1.Credentials(ChainObject_1.ChainObject.parse("1.2.27"), "5Hxwqx6JJUBYWjQNt8DomTNJ6r6YK8wDJym4CMAH1zGctFyQtzt");
+// send 1DCT to account id '1.2.28 (public-account-10)' with encrypted 'hello memo' memo
+var disposable = api.accountApi.transfer(credentials, "public-account-10", new AssetAmount_1.AssetAmount(100000000), "hello memo")
+    .subscribe(function (confirmation) { return console.log(confirmation.id); });
